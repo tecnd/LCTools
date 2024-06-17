@@ -9,11 +9,16 @@
 </p>
 
 {#each cards as card}
-  <div>
-    <p>{card.name}</p>
-    <enhanced:img src={card.image} alt={card.name} class="w-48" />
-    {#if card.tags}
-      <p>{card.tags.join(', ')}</p>
-    {/if}
+  <p>{`${card.name} (${card.cost})`}</p>
+  <div class="flex">
+    <div>
+      <enhanced:img src={card.image} alt={card.name} class="w-48" />
+    </div>
+    <div class="ml-1">
+      {#if card.tags}
+        <p>{card.tags.join(', ')}</p>
+      {/if}
+      <p>Look! Some text!</p>
+    </div>
   </div>
 {/each}
