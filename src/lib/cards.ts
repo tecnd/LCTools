@@ -1,14 +1,37 @@
 import type { Picture } from "vite-imagetools";
 
+export const categories = [
+  "Fires",
+  "Maneuver",
+  "Interception",
+  "Info Ops",
+  "C5ISR",
+] as const;
+export type Category = (typeof categories)[number];
+
+export const tags = {
+  Attach: "This card is attached to a unit during deployment.",
+  Aviation: "This card is an aircraft and can be FTR NULLIFIED.",
+  Ballistic:
+    "Ballistic missiles can only be intercepted by units with ballistic missile defense.",
+  "Cyber & EMS":
+    "If a cyber or EMS card is successfully utilized, add one cube to the opponent's Tactical Network card unless it removed cubes from your own Tactical Network or nullified another cyber or EMS card.",
+  Fighter: "This card is capable of FTR NULLIFYING enemy aviation.",
+  Hypersonic: "Hypersonic weapons are difficult to intercept.",
+  LRS: "This card can attack enemy units using LRS.",
+  Reveal: "This card can reveal hidden enemy units.",
+} as const satisfies Record<string, string>;
+export type Tag = keyof typeof tags;
+
 interface Card {
   faction: "USMC" | "PLAN";
   name: string;
   image: Picture;
   cost: number;
-  category: "Fires" | "Maneuver" | "Interception" | "Info Ops" | "C5ISR";
+  category: Category;
   availability: number;
   cardText: string;
-  tags?: (keyof typeof tags)[];
+  tags?: Tag[];
   notes?: string;
 }
 
@@ -27,20 +50,7 @@ for (const [key, value] of Object.entries(images)) {
   imageMap[`${match[1]} ${match[2]}`] = value;
 }
 
-const tags = {
-  Attach: "This card is attached to a unit during deployment.",
-  Aviation: "This card is an aircraft and can be FTR NULLIFIED.",
-  Ballistic:
-    "Ballistic missiles can only be intercepted by units with ballistic missile defense.",
-  "Cyber & EMS":
-    "If a cyber or EMS card is successfully utilized, add one cube to the opponent's Tactical Network card unless it removed cubes from your own Tactical Network or nullified another cyber or EMS card.",
-  Fighter: "This card is capable of FTR NULLIFYING enemy aviation.",
-  Hypersonic: "Hypersonic weapons are difficult to intercept.",
-  LRS: "This card can attack enemy units using LRS.",
-  Reveal: "This card can reveal hidden enemy units.",
-} satisfies Record<string, string>;
-
-const cards: Card[] = [
+export const cards: Card[] = [
   {
     faction: "PLAN",
     name: "Tactical Network",
@@ -101,5 +111,3 @@ const cards: Card[] = [
     tags: ["Ballistic", "LRS"],
   },
 ];
-
-export default cards;
