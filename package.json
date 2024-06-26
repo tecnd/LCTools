@@ -13,14 +13,13 @@
     "preversion": "npm run build"
   },
   "devDependencies": {
-    "@eslint/js": "^8.57.0",
     "@sveltejs/adapter-static": "^3.0.2",
     "@sveltejs/enhanced-img": "^0.3.0",
     "@sveltejs/kit": "^2.5.16",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
-    "@types/eslint__js": "^8.42.3",
+    "@types/eslint": "^8.56.10",
     "autoprefixer": "^10.4.7",
-    "eslint": "^8.57.0",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.40.0",
     "postcss": "^8.4.14",
@@ -32,7 +31,7 @@
     "tailwindcss": "^3.1.5",
     "tslib": "^2.3.1",
     "typescript": "^5.4.5",
-    "typescript-eslint": "^7.13.0",
+    "typescript-eslint": "^8.0.0-alpha.20",
     "vite": "^5.3.1"
   },
   "type": "module"

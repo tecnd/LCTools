@@ -1,30 +1,30 @@
-// @ts-check
+import js from "@eslint/js";
+import ts from "typescript-eslint";
+import svelte from "eslint-plugin-svelte";
+import prettier from "eslint-config-prettier";
 
-import eslint from "@eslint/js";
-import eslintPluginSvelte from "eslint-plugin-svelte";
-import tseslint from "typescript-eslint";
-import svelteConfig from "./svelte.config.js";
-
+/** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
-  eslint.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...eslintPluginSvelte.configs["flat/recommended"],
-  ...eslintPluginSvelte.configs["flat/prettier"],
+  js.configs.recommended,
+  ...ts.configs.recommended,
+  ...svelte.configs["flat/recommended"],
+  prettier,
+  ...svelte.configs["flat/prettier"],
   {
-    files: ["**/*.svelte", "*.svelte"],
+    files: ["**/*.svelte"],
     languageOptions: {
       parserOptions: {
-        parser: tseslint.parser,
-        svelteConfig,
+        parser: ts.parser,
       },
     },
   },
   {
     rules: {
+      "no-undef": "off",
       "svelte/no-at-html-tags": "warn",
     },
   },
   {
-    ignores: [".svelte-kit/", "build/"],
+    ignores: ["build/", ".svelte-kit/", "dist/"],
   },
 ];
