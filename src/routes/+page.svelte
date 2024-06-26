@@ -3,6 +3,9 @@
   import { cards, categories, tags } from "$lib/cards";
   import { flip } from "svelte/animate";
 
+  const version = __APP_VERSION__;
+  const buildTime = __APP_BUILD_TIME__;
+
   let costFilter = 5;
   let categoryFilter: Category[] = [];
   let tagFilter: Tag[] = [];
@@ -24,7 +27,9 @@
 </script>
 
 <div class="sticky top-0 bg-white p-1">
-  <h1 class="text-2xl">LCTools</h1>
+  <h1 class="text-2xl">
+    LCTools <span class="text-base">{version} built on {buildTime}</span>
+  </h1>
   <div class="flex">
     <input
       type="range"

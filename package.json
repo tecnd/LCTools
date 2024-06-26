@@ -1,6 +1,6 @@
 {
-  "name": "sveltekit-tailwind-static-template",
-  "version": "0.2.0",
+  "name": "lc-tools",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "vite dev",
