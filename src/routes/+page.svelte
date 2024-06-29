@@ -1,6 +1,9 @@
 <script lang="ts">
+  import { replaceState } from "$app/navigation";
+  import { page } from "$app/stores";
   import type { Category, Tag } from "$lib/cards";
   import { cards, categories, tags } from "$lib/cards";
+  import { afterUpdate, onMount, tick } from "svelte";
   import { flip } from "svelte/animate";
 
   const VERSION = __APP_VERSION__;
@@ -10,6 +13,27 @@
   let costFilter = MAX_COST;
   let categoryFilter: Category[] = [];
   let tagFilter: Tag[] = [];
+
+  onMount(() => {
+    const searchParams = new URL(document.URL).searchParams;
+    if (searchParams.has("cost")) {
+      const newCost = Number(searchParams.get("cost"));
+      if (!Number.isNaN(newCost)) {
+        costFilter = Math.max(0, Math.min(MAX_COST, newCost));
+      }
+    }
+  });
+
+  afterUpdate(async () => {
+    const oldParams = new URL(document.URL).searchParams;
+    const newParams = new URLSearchParams();
+    newParams.set("cost", costFilter.toString());
+    // Only set the query string if they are different, otherwise it will trigger an infinite loop
+    if (oldParams.toString() !== newParams.toString()) {
+      await tick(); // need to wait for root to be created if replacing during very first update
+      replaceState("?" + newParams.toString(), $page.state);
+    }
+  });
 
   $: filteredCards = cards.filter((card) => {
     const costCheck = card.cost <= costFilter;
