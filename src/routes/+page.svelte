@@ -12,6 +12,11 @@
 
   let mounted = false;
   let costFilter = MAX_COST;
+  let rawSearchFilter = "";
+  $: searchFilter = rawSearchFilter
+    .toLowerCase()
+    .trim()
+    .replaceAll(/\s+/g, " ");
   let categoryFilter: Category[] = [];
   let tagFilter: Tag[] = [];
 
@@ -23,6 +28,13 @@
       if (!Number.isNaN(newCost)) {
         costFilter = Math.max(0, Math.min(MAX_COST, newCost));
       }
+    }
+    if (searchParams.has("search")) {
+      rawSearchFilter = searchParams
+        .get("search")!
+        .toLowerCase()
+        .trim()
+        .replaceAll(/\s+/g, " ");
     }
     if (searchParams.has("category")) {
       categoryFilter = searchParams
@@ -39,6 +51,9 @@
     const oldParams = new URL(document.URL).searchParams;
     const newParams = new URLSearchParams();
     newParams.set("cost", costFilter.toString());
+    if (searchFilter) {
+      newParams.set("search", searchFilter);
+    }
     for (const category of categoryFilter) {
       newParams.append("category", category);
     }
@@ -54,6 +69,9 @@
 
   $: filteredCards = cards.filter((card) => {
     const costCheck = card.cost <= costFilter;
+    const searchCheck =
+      card.name.toLowerCase().includes(searchFilter) ||
+      card.cardText.toLowerCase().includes(searchFilter);
     const categoryCheck =
       categoryFilter.length === 0
         ? true
@@ -64,7 +82,7 @@
         : !card.tags
           ? false
           : card.tags.some((tag) => tagFilter.includes(tag));
-    return costCheck && categoryCheck && tagCheck;
+    return costCheck && searchCheck && categoryCheck && tagCheck;
   });
 </script>
 
@@ -72,7 +90,7 @@
   <h1 class="text-2xl">
     LCTools <span class="text-base">{VERSION} built on {BUILD_TIME}</span>
   </h1>
-  <div class="flex">
+  <div class="mb-2 flex">
     <input
       type="range"
       min="0"
@@ -82,12 +100,19 @@
       bind:value={costFilter}
     />
     <span class="ml-1">{costFilter}</span>
+    <datalist id="markers">
+      {#each [...Array(MAX_COST + 1).keys()] as value}
+        <option {value} />
+      {/each}
+    </datalist>
   </div>
-  <datalist id="markers">
-    {#each [...Array(MAX_COST + 1).keys()] as value}
-      <option {value} />
-    {/each}
-  </datalist>
+
+  <input
+    type="search"
+    placeholder="search"
+    bind:value={rawSearchFilter}
+    class="rounded-md border"
+  />
 
   <div>
     {#each categories as category}
@@ -138,7 +163,7 @@
             <p>Availability: {card.availability}</p>
             <p>Category: {card.category}</p>
             <hr class="my-1" />
-            <p>{@html card.cardText}</p>
+            <p class="whitespace-pre-line">{card.cardText}</p>
             {#if card.tags}
               <hr class="my-1" />
               <p>

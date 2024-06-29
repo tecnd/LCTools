@@ -70,11 +70,11 @@ export const cards: Card[] = [
     cost: 0,
     availability: 1,
     category: "C5ISR",
-    cardText: `This affects all friendly LRS and INTERCEPT values (including JCCs) for the PRC team. For every successful enemy cyber or EMS JCC, add 1 blue cube to this card.<br>
-      No Effect: 0-1 cubes.<br>
-      Minor Effect: 2-3, reduce by 4.<br>
-      Major Effect: 4+, reduce by 7.<br>
-      Any player may spend 2 APs on their turn to remove one cube.`,
+    cardText: `This affects all friendly LRS and INTERCEPT values (including JCCs) for the PRC team. For every successful enemy cyber or EMS JCC, add 1 blue cube to this card.
+No Effect: 0-1 cubes.
+Minor Effect: 2-3, reduce by 4.
+Major Effect: 4+, reduce by 7.
+Any player may spend 2 APs on their turn to remove one cube.`,
   },
   {
     faction: "PLAN",
@@ -83,10 +83,10 @@ export const cards: Card[] = [
     cost: 3,
     availability: 2,
     category: "Interception",
-    cardText: `Once per turn, choose one and roll 1 die. All options succeed on 1-12:<br>
-      A) FTR NULLIFY 1 or 2 enemy aviation JCCs (but not enemy tactical UAS);<br>
-      B) Reduce all enemy attacks against 1 friendly aviation JCC by 7;<br>
-      C) Reveal all units in one naval hex, then roll 2 dice to attack. LRS: 1-12.`,
+    cardText: `Once per turn, choose one and roll 1 die. All options succeed on 1-12:
+A) FTR NULLIFY 1 or 2 enemy aviation JCCs (but not enemy tactical UAS);
+B) Reduce all enemy attacks against 1 friendly aviation JCC by 7;
+C) Reveal all units in one naval hex, then roll 2 dice to attack. LRS: 1-12.`,
     tags: ["Aviation", "Fighter", "LRS", "Reveal"],
   },
   {
