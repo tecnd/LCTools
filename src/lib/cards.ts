@@ -8,6 +8,12 @@ export const categories = [
   "C5ISR",
 ] as const;
 export type Category = (typeof categories)[number];
+export function isCategory(t: unknown): t is Category {
+  if (typeof t === "string") {
+    return (categories as readonly string[]).includes(t);
+  }
+  return false;
+}
 
 export const tags = {
   Attach: "This card is attached to a unit during deployment.",
@@ -22,6 +28,12 @@ export const tags = {
   Reveal: "This card can reveal hidden enemy units.",
 } as const satisfies Record<string, string>;
 export type Tag = keyof typeof tags;
+export function isTag(t: unknown): t is Tag {
+  if (typeof t === "string") {
+    return Object.keys(tags).includes(t);
+  }
+  return false;
+}
 
 interface Card {
   faction: "USMC" | "PLAN";

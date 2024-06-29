@@ -2,7 +2,7 @@
   import { replaceState } from "$app/navigation";
   import { page } from "$app/stores";
   import type { Category, Tag } from "$lib/cards";
-  import { cards, categories, tags } from "$lib/cards";
+  import { cards, categories, isCategory, isTag, tags } from "$lib/cards";
   import { afterUpdate, onMount, tick } from "svelte";
   import { flip } from "svelte/animate";
 
@@ -15,6 +15,7 @@
   let tagFilter: Tag[] = [];
 
   onMount(() => {
+    // validate search params and set filters
     const searchParams = new URL(document.URL).searchParams;
     if (searchParams.has("cost")) {
       const newCost = Number(searchParams.get("cost"));
@@ -22,12 +23,26 @@
         costFilter = Math.max(0, Math.min(MAX_COST, newCost));
       }
     }
+    if (searchParams.has("category")) {
+      categoryFilter = searchParams
+        .getAll("category")
+        .filter((category) => isCategory(category));
+    }
+    if (searchParams.has("tag")) {
+      tagFilter = searchParams.getAll("tag").filter((tag) => isTag(tag));
+    }
   });
 
   afterUpdate(async () => {
     const oldParams = new URL(document.URL).searchParams;
     const newParams = new URLSearchParams();
     newParams.set("cost", costFilter.toString());
+    for (const category of categoryFilter) {
+      newParams.append("category", category);
+    }
+    for (const tag of tagFilter) {
+      newParams.append("tag", tag);
+    }
     // Only set the query string if they are different, otherwise it will trigger an infinite loop
     if (oldParams.toString() !== newParams.toString()) {
       await tick(); // need to wait for root to be created if replacing during very first update
