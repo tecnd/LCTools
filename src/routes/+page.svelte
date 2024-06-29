@@ -10,6 +10,7 @@
   const BUILD_TIME = __APP_BUILD_TIME__;
   const MAX_COST = 5;
 
+  let mounted = false;
   let costFilter = MAX_COST;
   let categoryFilter: Category[] = [];
   let tagFilter: Tag[] = [];
@@ -31,6 +32,7 @@
     if (searchParams.has("tag")) {
       tagFilter = searchParams.getAll("tag").filter((tag) => isTag(tag));
     }
+    mounted = true;
   });
 
   afterUpdate(async () => {
@@ -121,35 +123,39 @@
   </div>
 </div>
 
-<div class="xl:grid xl:grid-cols-2">
-  {#each filteredCards as card (card.faction + card.name)}
-    <div class="m-1 outline outline-1" animate:flip={{ duration: 500 }}>
-      <p>{`(${card.cost}) ${card.name}`}</p>
-      <div class="flex">
-        <div class="w-64 flex-none">
-          <enhanced:img src={card.image} alt={card.name} title={card.name} />
-        </div>
-        <div class="mx-1">
-          <p>Faction: {card.faction}</p>
-          <p>Cost: {card.cost}</p>
-          <p>Availability: {card.availability}</p>
-          <p>Category: {card.category}</p>
-          <hr class="my-1" />
-          <p>{@html card.cardText}</p>
-          {#if card.tags}
+{#if mounted}
+  <div class="xl:grid xl:grid-cols-2">
+    {#each filteredCards as card (card.faction + card.name)}
+      <div class="m-1 outline outline-1" animate:flip={{ duration: 500 }}>
+        <p>{`(${card.cost}) ${card.name}`}</p>
+        <div class="flex">
+          <div class="w-64 flex-none">
+            <enhanced:img src={card.image} alt={card.name} title={card.name} />
+          </div>
+          <div class="mx-1">
+            <p>Faction: {card.faction}</p>
+            <p>Cost: {card.cost}</p>
+            <p>Availability: {card.availability}</p>
+            <p>Category: {card.category}</p>
             <hr class="my-1" />
-            <p>
-              Tags:
-              {#each card.tags as tag}
-                <span
-                  class="cursor-help underline decoration-dotted after:mr-1 after:content-[','] last:after:content-none"
-                  title={tags[tag]}>{tag}</span
-                >
-              {/each}
-            </p>
-          {/if}
+            <p>{@html card.cardText}</p>
+            {#if card.tags}
+              <hr class="my-1" />
+              <p>
+                Tags:
+                {#each card.tags as tag}
+                  <span
+                    class="cursor-help underline decoration-dotted after:mr-1 after:content-[','] last:after:content-none"
+                    title={tags[tag]}>{tag}</span
+                  >
+                {/each}
+              </p>
+            {/if}
+          </div>
         </div>
       </div>
-    </div>
-  {/each}
-</div>
+    {/each}
+  </div>
+{:else}
+  <p>Loading...</p>
+{/if}
