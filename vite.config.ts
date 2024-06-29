@@ -7,7 +7,7 @@ const config: UserConfig = {
   plugins: [enhancedImages(), sveltekit()],
   define: {
     __APP_VERSION__: JSON.stringify(version),
-    __APP_BUILD_TIME__: JSON.stringify(new Date().toLocaleString()),
+    __APP_BUILD_TIME__: JSON.stringify(new Date().getTime()),
   },
 };
 

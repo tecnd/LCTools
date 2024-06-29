@@ -7,7 +7,7 @@
   import { flip } from "svelte/animate";
 
   const VERSION = __APP_VERSION__;
-  const BUILD_TIME = __APP_BUILD_TIME__;
+  const BUILD_TIME = (new Date(__APP_BUILD_TIME__)).toLocaleDateString();
   const MAX_COST = 5;
 
   let mounted = false;
