@@ -3,10 +3,11 @@
   import { cards, categories, tags } from "$lib/cards";
   import { flip } from "svelte/animate";
 
-  const version = __APP_VERSION__;
-  const buildTime = __APP_BUILD_TIME__;
+  const VERSION = __APP_VERSION__;
+  const BUILD_TIME = __APP_BUILD_TIME__;
+  const MAX_COST = 5;
 
-  let costFilter = 5;
+  let costFilter = MAX_COST;
   let categoryFilter: Category[] = [];
   let tagFilter: Tag[] = [];
 
@@ -28,13 +29,13 @@
 
 <div class="sticky top-0 bg-white p-1">
   <h1 class="text-2xl">
-    LCTools <span class="text-base">{version} built on {buildTime}</span>
+    LCTools <span class="text-base">{VERSION} built on {BUILD_TIME}</span>
   </h1>
   <div class="flex">
     <input
       type="range"
       min="0"
-      max="5"
+      max={MAX_COST}
       step="1"
       list="markers"
       bind:value={costFilter}
@@ -42,12 +43,9 @@
     <span class="ml-1">{costFilter}</span>
   </div>
   <datalist id="markers">
-    <option value="0" />
-    <option value="1" />
-    <option value="2" />
-    <option value="3" />
-    <option value="4" />
-    <option value="5" />
+    {#each [...Array(MAX_COST + 1).keys()] as value}
+      <option {value} />
+    {/each}
   </datalist>
 
   <div>
